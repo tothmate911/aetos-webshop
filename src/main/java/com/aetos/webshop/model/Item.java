@@ -23,6 +23,8 @@ public class Item {
 
     private String description;
 
+    private String imageUrl;
+
     private String category;
 
     private BigDecimal price;

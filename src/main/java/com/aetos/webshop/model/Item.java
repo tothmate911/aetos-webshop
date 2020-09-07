@@ -20,4 +20,5 @@ public class Item {
 
     private int quantityOnStock;
 
+    private String category;
 }

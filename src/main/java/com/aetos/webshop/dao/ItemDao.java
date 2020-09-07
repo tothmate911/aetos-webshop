@@ -8,12 +8,12 @@ public interface ItemDao {
 
     List<Item> getAll();
 
-    Item getById(Long id);
+    Item getById(Long itemId);
 
-    Item addItem(Item item);
+    Item storeItem(Item item);
 
-    Item editItem(Long id, Item item);
+    Item updateItem(Long itemId, Item updatedItem);
 
-    Item deleteItem(Long id);
+    Item deleteItem(Long itemId);
 
 }

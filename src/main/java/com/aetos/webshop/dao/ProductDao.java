@@ -8,12 +8,12 @@ public interface ProductDao {
 
     List<Product> getAll();
 
-    Product getById(Long productId);
+    Product getById(Long productId) throws ProductNotFoundException;
 
     Product storeItem(Product product);
 
-    Product updateItem(Long productId, Product updatedProduct);
+    Product updateItem(Long productId, Product updatedProduct) throws ProductNotFoundException;
 
-    Product deleteItem(Long productId);
+    Product deleteItem(Long productId) throws ProductNotFoundException;
 
 }

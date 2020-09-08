@@ -1,9 +1,12 @@
 package com.aetos.webshop.controller;
 
 import com.aetos.webshop.dao.ProductDao;
+import com.aetos.webshop.dao.ProductNotFoundException;
 import com.aetos.webshop.model.Product;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -22,7 +25,11 @@ public class ProductController {
 
     @GetMapping("/{productId}")
     public Product getById(@PathVariable Long productId) {
-        return productDao.getById(productId);
+        try {
+            return productDao.getById(productId);
+        } catch (ProductNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found with id: " + productId);
+        }
     }
 
     @PostMapping("")
@@ -32,12 +39,20 @@ public class ProductController {
 
     @PutMapping("/{productId}")
     public Product updateItem(@PathVariable Long productId, @RequestBody Product product) {
-        return productDao.updateItem(productId, product);
+        try {
+            return productDao.updateItem(productId, product);
+        } catch (ProductNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found with id: " + productId);
+        }
     }
 
     @DeleteMapping("/{productId}")
     public Product deleteItem(@PathVariable Long productId) {
-        return productDao.deleteItem(productId);
+        try {
+            return productDao.deleteItem(productId);
+        } catch (ProductNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found with id: " + productId);
+        }
     }
 
 }

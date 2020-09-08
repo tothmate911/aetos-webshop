@@ -22,9 +22,14 @@ public class ProductDaoDB implements ProductDao {
     }
 
     @Override
-    public Product getById(Long productId) {
+    public Product getById(Long productId) throws ProductNotFoundException {
         log.info("Get item by id: " + productId);
-        return productRepository.findById(productId).orElse(null);
+        Product product = productRepository.findById(productId).orElse(null);
+        if (product != null) {
+            return product;
+        } else {
+            throw new ProductNotFoundException();
+        }
     }
 
     @Override
@@ -36,11 +41,12 @@ public class ProductDaoDB implements ProductDao {
     }
 
     @Override
-    public Product updateItem(Long productId, Product updatedProduct) {
+    public Product updateItem(Long productId, Product updatedProduct) throws ProductNotFoundException {
         Product productToUpdate = productRepository.findById(productId).orElse(null);
         if (productToUpdate != null) {
             productToUpdate.setName(updatedProduct.getName());
             productToUpdate.setDescription(updatedProduct.getDescription());
+            productToUpdate.setImageUrl(updatedProduct.getImageUrl());
             productToUpdate.setCategory(updatedProduct.getCategory());
             productToUpdate.setPrice(updatedProduct.getPrice());
             productToUpdate.setQuantityOnStock(updatedProduct.getQuantityOnStock());
@@ -49,19 +55,22 @@ public class ProductDaoDB implements ProductDao {
             log.info("Updated item: " + productToUpdate);
         } else {
             log.info("Failed to update, item with id " + productId + " not found");
+            throw new ProductNotFoundException();
         }
         return productToUpdate;
     }
 
     @Override
-    public Product deleteItem(Long productId) {
+    public Product deleteItem(Long productId) throws ProductNotFoundException {
         Product product = productRepository.findById(productId).orElse(null);
         if (product != null) {
             productRepository.delete(product);
             log.info("Item deleted: " + product);
         } else {
             log.info("Failed to delete, item with id " + productId + " not found");
+            throw new ProductNotFoundException();
         }
         return product;
     }
+
 }

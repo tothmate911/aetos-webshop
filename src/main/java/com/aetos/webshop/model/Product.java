@@ -16,18 +16,17 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Item {
+public class Product {
 
     @Id
     @GeneratedValue
-    private Long itemId;
+    private Long productId;
 
     private String name;
 
     @Column(columnDefinition = "text")
     private String description;
 
-    @Column(columnDefinition = "text")
     private String imageUrl;
 
     private String category;

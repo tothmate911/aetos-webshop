@@ -29,6 +29,7 @@ public class ProductDaoDB implements ProductDao {
 
     @Override
     public Product storeItem(Product product) {
+        product.setProductId(null);
         productRepository.save(product);
         log.info("Item saved: " + product);
         return product;

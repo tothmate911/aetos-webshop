@@ -1,5 +1,6 @@
 package com.aetos.webshop.dao;
 
+import com.aetos.webshop.exception.ProductNotFoundException;
 import com.aetos.webshop.model.Product;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public interface ProductDao {
 
     Product getById(Long productId) throws ProductNotFoundException;
 
-    Product storeItem(Product product);
+    Product storeProduct(Product product);
 
     Product updateItem(Long productId, Product updatedProduct) throws ProductNotFoundException;
 

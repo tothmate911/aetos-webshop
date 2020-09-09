@@ -1,4 +1,4 @@
-package com.aetos.webshop.dao;
+package com.aetos.webshop.exception;
 
 public class ProductNotFoundException extends Exception {
 }

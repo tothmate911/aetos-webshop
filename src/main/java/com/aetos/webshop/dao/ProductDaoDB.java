@@ -1,5 +1,6 @@
 package com.aetos.webshop.dao;
 
+import com.aetos.webshop.exception.ProductNotFoundException;
 import com.aetos.webshop.model.Product;
 import com.aetos.webshop.repository.ProductRepository;
 import lombok.AllArgsConstructor;
@@ -33,7 +34,7 @@ public class ProductDaoDB implements ProductDao {
     }
 
     @Override
-    public Product storeItem(Product product) {
+    public Product storeProduct(Product product) {
         product.setProductId(null);
         productRepository.save(product);
         log.info("Item saved: " + product);

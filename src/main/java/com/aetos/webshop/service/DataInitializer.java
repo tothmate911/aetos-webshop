@@ -3,12 +3,14 @@ package com.aetos.webshop.service;
 import com.aetos.webshop.dao.ProductDao;
 import com.aetos.webshop.model.Product;
 import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 
 @Service
+@Profile("production")
 @AllArgsConstructor
 public class DataInitializer {
 
@@ -16,7 +18,7 @@ public class DataInitializer {
 
     @PostConstruct
     public void init() {
-        productDao.storeItem(
+        productDao.storeProduct(
                 Product.builder()
                         .name("Lego Train station")
                         .description("A great lego")
@@ -27,7 +29,7 @@ public class DataInitializer {
                         .build()
         );
 
-        productDao.storeItem(
+        productDao.storeProduct(
                 Product.builder()
                         .name("Football")
                         .description("A great football")
@@ -38,7 +40,7 @@ public class DataInitializer {
                         .build()
         );
 
-        productDao.storeItem(
+        productDao.storeProduct(
                 Product.builder()
                         .name("Lego")
                         .description("A great lego tractor")

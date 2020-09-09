@@ -1,7 +1,7 @@
 package com.aetos.webshop.controller;
 
 import com.aetos.webshop.dao.ProductDao;
-import com.aetos.webshop.dao.ProductNotFoundException;
+import com.aetos.webshop.exception.ProductNotFoundException;
 import com.aetos.webshop.model.Product;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -34,7 +34,7 @@ public class ProductController {
 
     @PostMapping("")
     public Product storeItem(@RequestBody Product product) {
-        return productDao.storeItem(product);
+        return productDao.storeProduct(product);
     }
 
     @PutMapping("/{productId}")

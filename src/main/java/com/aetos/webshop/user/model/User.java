@@ -27,6 +27,8 @@ public class User {
     private String lastName;
 
     @ElementCollection
+    @CollectionTable(name = "cart",
+            joinColumns = @JoinColumn(name = "product_id"))
     private Map<Product, Integer> Cart;
 
 }

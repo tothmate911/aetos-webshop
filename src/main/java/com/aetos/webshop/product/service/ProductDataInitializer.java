@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @Service
 @Profile("production")
 @AllArgsConstructor
-public class DataInitializer {
+public class ProductDataInitializer {
 
     private ProductDao productDao;
 

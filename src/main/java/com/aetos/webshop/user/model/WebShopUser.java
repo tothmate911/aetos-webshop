@@ -11,7 +11,7 @@ import java.util.Map;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class WebShopUser {
 
     @Id
     @GeneratedValue
@@ -28,7 +28,9 @@ public class User {
 
     @ElementCollection
     @CollectionTable(name = "cart",
-            joinColumns = @JoinColumn(name = "product_id"))
+            joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "quantity")
+    @MapKeyJoinColumn(name = "product_id")
     private Map<Product, Integer> Cart;
 
 }

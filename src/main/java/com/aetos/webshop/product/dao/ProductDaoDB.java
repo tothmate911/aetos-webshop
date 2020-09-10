@@ -42,11 +42,8 @@ public class ProductDaoDB implements ProductDao {
 
     @Override
     public Product updateItem(Long productId, Product updatedProduct) throws ProductNotFoundException {
-        Product productToUpdate = productRepository.findById(productId)
-                .orElseThrow(() -> {
-                    log.info("Failed to update, product not found with id " + productId);
-                    return new ProductNotFoundException(productId);
-                });
+        Product productToUpdate = getById(productId);
+
         productToUpdate.setName(updatedProduct.getName());
         productToUpdate.setDescription(updatedProduct.getDescription());
         productToUpdate.setImageUrl(updatedProduct.getImageUrl());
@@ -61,11 +58,7 @@ public class ProductDaoDB implements ProductDao {
 
     @Override
     public Product deleteItem(Long productId) throws ProductNotFoundException {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> {
-                    log.info("Failed to delete, product not found with id " + productId);
-                    return new ProductNotFoundException(productId);
-                });
+        Product product = getById(productId);
         productRepository.delete(product);
         log.info("Product deleted: " + product);
         return product;

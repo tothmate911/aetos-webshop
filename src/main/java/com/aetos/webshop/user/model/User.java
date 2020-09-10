@@ -17,13 +17,14 @@ public class User {
     @GeneratedValue
     Long userId;
 
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false, unique = true)
     private String hashedPassword;
 
     private String firstName;
     private String lastName;
-
-    @Column(nullable = false, unique = true)
-    private String email;
 
     @ElementCollection
     private Map<Product, Integer> Cart;

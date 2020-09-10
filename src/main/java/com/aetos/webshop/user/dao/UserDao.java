@@ -16,7 +16,7 @@ public interface UserDao {
 
     User addUser(User user);
 
-    User updateUser(Long userId, User updatedUser);
+    User updateUser(Long userId, User updatedUser) throws UserNotFoundException;
 
     User deleteUser(Long userId) throws UserNotFoundException;
 

@@ -14,9 +14,9 @@ public class UserDataInitializer {
 
     private UserDao userDao;
 
-//    @PostConstruct
-//    public void init() {
-//
-//    }
+    @PostConstruct
+    public void init() {
+
+    }
 
 }

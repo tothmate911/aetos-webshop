@@ -7,11 +7,12 @@ import javax.persistence.*;
 import java.util.Map;
 
 @Entity
+@Table(name="\"user\"")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class WebShopUser {
+public class User {
 
     @Id
     @GeneratedValue

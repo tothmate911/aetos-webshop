@@ -3,22 +3,22 @@ package com.aetos.webshop.user.dao;
 import com.aetos.webshop.product.exception.ProductNotFoundException;
 import com.aetos.webshop.product.model.Product;
 import com.aetos.webshop.user.exception.UserNotFoundException;
-import com.aetos.webshop.user.model.WebShopUser;
+import com.aetos.webshop.user.model.User;
 
 import java.util.List;
 import java.util.Map;
 
 public interface UserDao {
 
-    List<WebShopUser> getAll();
+    List<User> getAll();
 
-    WebShopUser getById(Long userId) throws UserNotFoundException;
+    User getById(Long userId) throws UserNotFoundException;
 
-    WebShopUser addUser(WebShopUser webShopUser);
+    User addUser(User user);
 
-    WebShopUser updateUser(Long userId, WebShopUser updatedWebShopUser) throws UserNotFoundException;
+    User updateUser(Long userId, User updatedUser) throws UserNotFoundException;
 
-    WebShopUser deleteUser(Long userId) throws UserNotFoundException;
+    User deleteUser(Long userId) throws UserNotFoundException;
 
     Map<Product, Integer> getCart(Long userId) throws UserNotFoundException;
 

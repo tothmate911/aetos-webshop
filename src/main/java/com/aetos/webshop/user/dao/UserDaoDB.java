@@ -4,7 +4,7 @@ import com.aetos.webshop.product.dao.ProductDao;
 import com.aetos.webshop.product.exception.ProductNotFoundException;
 import com.aetos.webshop.product.model.Product;
 import com.aetos.webshop.user.exception.UserNotFoundException;
-import com.aetos.webshop.user.model.WebShopUser;
+import com.aetos.webshop.user.model.User;
 import com.aetos.webshop.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,13 +23,13 @@ public class UserDaoDB implements UserDao {
     private ProductDao productDao;
 
     @Override
-    public List<WebShopUser> getAll() {
+    public List<User> getAll() {
         log.info("Get all users");
         return userRepository.findAll();
     }
 
     @Override
-    public WebShopUser getById(Long userId) throws UserNotFoundException {
+    public User getById(Long userId) throws UserNotFoundException {
         return userRepository.findById(userId)
                 .orElseThrow(() -> {
                     log.info("User not found with id: " + userId);
@@ -38,45 +38,45 @@ public class UserDaoDB implements UserDao {
     }
 
     @Override
-    public WebShopUser addUser(WebShopUser webShopUser) {
-        webShopUser.setUserId(null);
-        userRepository.save(webShopUser);
-        log.info("User saved: " + webShopUser);
-        return webShopUser;
+    public User addUser(User user) {
+        user.setUserId(null);
+        userRepository.save(user);
+        log.info("User saved: " + user);
+        return user;
     }
 
     @Override
-    public WebShopUser updateUser(Long userId, WebShopUser updatedWebShopUser) throws UserNotFoundException {
-        WebShopUser webShopUserToUpdate = getById(userId);
+    public User updateUser(Long userId, User updatedUser) throws UserNotFoundException {
+        User userToUpdate = getById(userId);
 
-        webShopUserToUpdate.setFirstName(updatedWebShopUser.getFirstName());
-        webShopUserToUpdate.setLastName(updatedWebShopUser.getLastName());
+        userToUpdate.setFirstName(updatedUser.getFirstName());
+        userToUpdate.setLastName(updatedUser.getLastName());
 
-        log.info("Updated user: " + webShopUserToUpdate);
-        return webShopUserToUpdate;
+        log.info("Updated user: " + userToUpdate);
+        return userToUpdate;
     }
 
     @Override
-    public WebShopUser deleteUser(Long userId) throws UserNotFoundException {
-        WebShopUser webShopUser = getById(userId);
-        userRepository.delete(webShopUser);
-        log.info("User deleted: " + webShopUser);
-        return webShopUser;
+    public User deleteUser(Long userId) throws UserNotFoundException {
+        User user = getById(userId);
+        userRepository.delete(user);
+        log.info("User deleted: " + user);
+        return user;
     }
 
     @Override
     public Map<Product, Integer> getCart(Long userId) throws UserNotFoundException {
-        WebShopUser webShopUser = getById(userId);
-        return webShopUser.getCart();
+        User user = getById(userId);
+        return user.getCart();
     }
 
     @Override
     public Map<Product, Integer> addToCart(Long userId, Long productId, Integer quantity)
             throws UserNotFoundException, ProductNotFoundException {
-        WebShopUser webShopUser = getById(userId);
+        User user = getById(userId);
         Product product = productDao.getById(productId);
 
-        Map<Product, Integer> cart = webShopUser.getCart();
+        Map<Product, Integer> cart = user.getCart();
         cart.put(product, cart.getOrDefault(product, 0) + quantity);
         return cart;
     }
@@ -84,10 +84,10 @@ public class UserDaoDB implements UserDao {
     @Override
     public Map<Product, Integer> removeFromCart(Long userId, Long productId, Integer quantity)
             throws UserNotFoundException, ProductNotFoundException {
-        WebShopUser webShopUser = getById(userId);
+        User user = getById(userId);
         Product product = productDao.getById(productId);
 
-        Map<Product, Integer> cart = webShopUser.getCart();
+        Map<Product, Integer> cart = user.getCart();
         Integer newQuantity = Math.max(cart.getOrDefault(product, 0) - quantity, 0);
         cart.put(product, newQuantity);
         return cart;

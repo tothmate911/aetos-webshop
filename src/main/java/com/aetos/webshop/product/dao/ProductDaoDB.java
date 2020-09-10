@@ -25,12 +25,11 @@ public class ProductDaoDB implements ProductDao {
     @Override
     public Product getById(Long productId) throws ProductNotFoundException {
         log.info("Get product by id: " + productId);
-        Product product = productRepository.findById(productId).orElse(null);
-        if (product != null) {
-            return product;
-        } else {
-            throw new ProductNotFoundException();
-        }
+        return productRepository.findById(productId)
+                .orElseThrow(() -> {
+                    log.info("Product not found with id: " + productId);
+                    return new ProductNotFoundException(productId);
+                });
     }
 
     @Override
@@ -43,34 +42,32 @@ public class ProductDaoDB implements ProductDao {
 
     @Override
     public Product updateItem(Long productId, Product updatedProduct) throws ProductNotFoundException {
-        Product productToUpdate = productRepository.findById(productId).orElse(null);
-        if (productToUpdate != null) {
-            productToUpdate.setName(updatedProduct.getName());
-            productToUpdate.setDescription(updatedProduct.getDescription());
-            productToUpdate.setImageUrl(updatedProduct.getImageUrl());
-            productToUpdate.setCategory(updatedProduct.getCategory());
-            productToUpdate.setPrice(updatedProduct.getPrice());
-            productToUpdate.setQuantityOnStock(updatedProduct.getQuantityOnStock());
+        Product productToUpdate = productRepository.findById(productId)
+                .orElseThrow(() -> {
+                    log.info("Failed to update, product not found with id " + productId);
+                    return new ProductNotFoundException(productId);
+                });
+        productToUpdate.setName(updatedProduct.getName());
+        productToUpdate.setDescription(updatedProduct.getDescription());
+        productToUpdate.setImageUrl(updatedProduct.getImageUrl());
+        productToUpdate.setCategory(updatedProduct.getCategory());
+        productToUpdate.setPrice(updatedProduct.getPrice());
+        productToUpdate.setQuantityOnStock(updatedProduct.getQuantityOnStock());
 
-            productRepository.save(productToUpdate);
-            log.info("Updated product: " + productToUpdate);
-        } else {
-            log.info("Failed to update, product with id " + productId + " not found");
-            throw new ProductNotFoundException();
-        }
+        productRepository.save(productToUpdate);
+        log.info("Updated product: " + productToUpdate);
         return productToUpdate;
     }
 
     @Override
     public Product deleteItem(Long productId) throws ProductNotFoundException {
-        Product product = productRepository.findById(productId).orElse(null);
-        if (product != null) {
-            productRepository.delete(product);
-            log.info("Product deleted: " + product);
-        } else {
-            log.info("Failed to delete, product with id " + productId + " not found");
-            throw new ProductNotFoundException();
-        }
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> {
+                    log.info("Failed to delete, product not found with id " + productId);
+                    return new ProductNotFoundException(productId);
+                });
+        productRepository.delete(product);
+        log.info("Product deleted: " + product);
         return product;
     }
 

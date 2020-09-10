@@ -12,7 +12,7 @@ public interface UserDao {
 
     List<User> getAll();
 
-    User getById(Long id) throws UserNotFoundException;
+    User getById(Long userId) throws UserNotFoundException;
 
     User addUser(User user);
 

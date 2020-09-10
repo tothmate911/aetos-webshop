@@ -21,12 +21,14 @@ public class UserDaoDB implements UserDao {
 
     @Override
     public List<User> getAll() {
-        return null;
+        log.info("Get all users");
+        return userRepository.findAll();
     }
 
     @Override
-    public User getById(Long id) throws UserNotFoundException {
-        return null;
+    public User getById(Long userId) throws UserNotFoundException {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
     }
 
     @Override

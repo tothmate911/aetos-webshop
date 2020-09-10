@@ -18,13 +18,13 @@ public class ProductDaoDB implements ProductDao {
 
     @Override
     public List<Product> getAll() {
-        log.info("Get all items");
+        log.info("Get all products");
         return productRepository.findAll();
     }
 
     @Override
     public Product getById(Long productId) throws ProductNotFoundException {
-        log.info("Get item by id: " + productId);
+        log.info("Get product by id: " + productId);
         Product product = productRepository.findById(productId).orElse(null);
         if (product != null) {
             return product;
@@ -37,7 +37,7 @@ public class ProductDaoDB implements ProductDao {
     public Product storeProduct(Product product) {
         product.setProductId(null);
         productRepository.save(product);
-        log.info("Item saved: " + product);
+        log.info("Product saved: " + product);
         return product;
     }
 
@@ -53,9 +53,9 @@ public class ProductDaoDB implements ProductDao {
             productToUpdate.setQuantityOnStock(updatedProduct.getQuantityOnStock());
 
             productRepository.save(productToUpdate);
-            log.info("Updated item: " + productToUpdate);
+            log.info("Updated product: " + productToUpdate);
         } else {
-            log.info("Failed to update, item with id " + productId + " not found");
+            log.info("Failed to update, product with id " + productId + " not found");
             throw new ProductNotFoundException();
         }
         return productToUpdate;
@@ -66,9 +66,9 @@ public class ProductDaoDB implements ProductDao {
         Product product = productRepository.findById(productId).orElse(null);
         if (product != null) {
             productRepository.delete(product);
-            log.info("Item deleted: " + product);
+            log.info("Product deleted: " + product);
         } else {
-            log.info("Failed to delete, item with id " + productId + " not found");
+            log.info("Failed to delete, product with id " + productId + " not found");
             throw new ProductNotFoundException();
         }
         return product;

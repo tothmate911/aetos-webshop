@@ -4,11 +4,21 @@ import com.aetos.webshop.product.exception.ProductNotFoundException;
 import com.aetos.webshop.product.model.Product;
 import com.aetos.webshop.user.exception.UserNotFoundException;
 import com.aetos.webshop.user.model.User;
+import com.aetos.webshop.user.repository.UserRepository;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 
+@Service
+@AllArgsConstructor
+@Slf4j
 public class UserDaoDB implements UserDao {
+
+    private UserRepository userRepository;
+
     @Override
     public List<User> getAll() {
         return null;

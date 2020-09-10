@@ -1,14 +1,10 @@
 package com.aetos.webshop.user.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.aetos.webshop.product.model.Product;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Map;
 
 @Entity
 @Data
@@ -28,5 +24,8 @@ public class User {
 
     @Column(nullable = false, unique = true)
     private String email;
+
+    @ElementCollection
+    private Map<Product, Integer> Cart;
 
 }

@@ -1,8 +1,8 @@
-package com.aetos.webshop.dao;
+package com.aetos.webshop.product.dao;
 
-import com.aetos.webshop.exception.ProductNotFoundException;
-import com.aetos.webshop.model.Product;
-import com.aetos.webshop.repository.ProductRepository;
+import com.aetos.webshop.product.exception.ProductNotFoundException;
+import com.aetos.webshop.product.model.Product;
+import com.aetos.webshop.product.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,7 @@
-package com.aetos.webshop.dao;
+package com.aetos.webshop.product.dao;
 
-import com.aetos.webshop.exception.ProductNotFoundException;
-import com.aetos.webshop.model.Product;
+import com.aetos.webshop.product.exception.ProductNotFoundException;
+import com.aetos.webshop.product.model.Product;
 
 import java.util.List;
 

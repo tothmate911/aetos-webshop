@@ -1,7 +1,7 @@
-package com.aetos.webshop.service;
+package com.aetos.webshop.product.service;
 
-import com.aetos.webshop.dao.ProductDao;
-import com.aetos.webshop.model.Product;
+import com.aetos.webshop.product.dao.ProductDao;
+import com.aetos.webshop.product.model.Product;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;

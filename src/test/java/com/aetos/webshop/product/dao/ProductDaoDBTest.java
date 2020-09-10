@@ -1,9 +1,8 @@
-package com.aetos.webshop.dao;
+package com.aetos.webshop.product.dao;
 
-import com.aetos.webshop.exception.ProductNotFoundException;
-import com.aetos.webshop.model.Product;
-import com.aetos.webshop.repository.ProductRepository;
-import lombok.SneakyThrows;
+import com.aetos.webshop.product.exception.ProductNotFoundException;
+import com.aetos.webshop.product.model.Product;
+import com.aetos.webshop.product.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

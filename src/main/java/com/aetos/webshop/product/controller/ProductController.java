@@ -1,8 +1,8 @@
-package com.aetos.webshop.controller;
+package com.aetos.webshop.product.controller;
 
-import com.aetos.webshop.dao.ProductDao;
-import com.aetos.webshop.exception.ProductNotFoundException;
-import com.aetos.webshop.model.Product;
+import com.aetos.webshop.product.dao.ProductDao;
+import com.aetos.webshop.product.exception.ProductNotFoundException;
+import com.aetos.webshop.product.model.Product;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

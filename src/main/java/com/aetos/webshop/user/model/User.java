@@ -34,7 +34,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "quantity")
     @MapKeyJoinColumn(name = "product_id")
-    private Map<Product, Integer> Cart;
+    private Map<Product, Integer> cart;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default

@@ -4,6 +4,8 @@ import com.aetos.webshop.product.model.Product;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Entity
@@ -33,5 +35,9 @@ public class User {
     @Column(name = "quantity")
     @MapKeyJoinColumn(name = "product_id")
     private Map<Product, Integer> Cart;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Builder.Default
+    private List<String> roles = new ArrayList<>();
 
 }

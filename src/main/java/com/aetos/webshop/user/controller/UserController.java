@@ -77,14 +77,44 @@ public class UserController {
         }
     }
 
-    @PutMapping("/{userId}/removeFromCart")
-    public Map<Product, Integer> removeFromCart(@PathVariable Long userId,
-                                                @RequestParam Long productId) {
-        return userDao.removeFromCart(userId)
+    @PutMapping("/{userId}/removeOneFromCart")
+    public Map<Product, Integer> removeOneFromCart(@PathVariable Long userId,
+                                                   @RequestParam Long productId) {
+        try {
+            return userDao.removeOneFromCart(userId, productId);
+        } catch (UserNotFoundException | ProductNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 
+    @PutMapping("/{userId}/removeProductFromCart")
+    public Map<Product, Integer> removeProductFromCart(@PathVariable Long userId,
+                                                       @RequestParam Long productId) {
+        try {
+            return userDao.removeProductFromCart(userId, productId);
+        } catch (UserNotFoundException | ProductNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
 
+    @PutMapping("/{userId}/updateQuantityOfProductInCart")
+    public Map<Product, Integer> updateQuantityOfProductInCart(@PathVariable Long userId,
+                                                               @RequestParam Long productId,
+                                                               @RequestParam Integer updatedQuantity) {
+        try {
+            return userDao.updateQuantityOfProductInCart(userId, productId, updatedQuantity);
+        } catch (UserNotFoundException | ProductNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
 
-
+    @PutMapping("/{userId}/clearCart")
+    public void clearCart(@PathVariable Long userId) {
+        try {
+            userDao.clearCart(userId);
+        } catch (UserNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
 
 }

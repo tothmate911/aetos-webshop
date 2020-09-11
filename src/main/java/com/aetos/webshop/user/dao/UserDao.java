@@ -25,7 +25,13 @@ public interface UserDao {
     Map<Product, Integer> addToCart(Long userId, Long productId, Integer quantity)
             throws UserNotFoundException, ProductNotFoundException;
 
-    Map<Product, Integer> removeFromCart(Long userId, Long productId, Integer quantity)
+    Map<Product, Integer> removeOneFromCart(Long userId, Long productId)
+            throws UserNotFoundException, ProductNotFoundException;
+
+    Map<Product, Integer> removeProductFromCart(Long userId, Long productId)
+            throws UserNotFoundException, ProductNotFoundException;
+
+    Map<Product, Integer> updateQuantityOfProductInCart(Long userId, Long productId, Integer updatedQuantity)
             throws UserNotFoundException, ProductNotFoundException;
 
     void clearCart(Long userId) throws UserNotFoundException;

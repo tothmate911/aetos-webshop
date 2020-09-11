@@ -33,7 +33,7 @@ public class UserDaoDB implements UserDao {
         return userRepository.findById(userId)
                 .orElseThrow(() -> {
                     log.info("User not found with id: " + userId);
-                    return new  UserNotFoundException(userId);
+                    return new UserNotFoundException(userId);
                 });
     }
 
@@ -67,6 +67,7 @@ public class UserDaoDB implements UserDao {
     @Override
     public Map<Product, Integer> getCart(Long userId) throws UserNotFoundException {
         User user = getById(userId);
+        log.info("Get cart for user: " + user);
         return user.getCart();
     }
 
@@ -74,22 +75,56 @@ public class UserDaoDB implements UserDao {
     public Map<Product, Integer> addToCart(Long userId, Long productId, Integer quantity)
             throws UserNotFoundException, ProductNotFoundException {
         User user = getById(userId);
+        Map<Product, Integer> cart = user.getCart();
         Product product = productDao.getById(productId);
 
-        Map<Product, Integer> cart = user.getCart();
         cart.put(product, cart.getOrDefault(product, 0) + quantity);
+        log.info("Product: " + product + " added to cart of user: " + user);
         return cart;
     }
 
     @Override
-    public Map<Product, Integer> removeFromCart(Long userId, Long productId, Integer quantity)
+    public Map<Product, Integer> removeOneFromCart(Long userId, Long productId)
             throws UserNotFoundException, ProductNotFoundException {
         User user = getById(userId);
+        Map<Product, Integer> cart = user.getCart();
         Product product = productDao.getById(productId);
 
+        if (cart.containsKey(product)) {
+            Integer currentQuantity = cart.get(product);
+            if (currentQuantity > 1) {
+                cart.put(product, currentQuantity - 1);
+            } else {
+                cart.remove(product);
+            }
+            log.info("Removed one product: " + product + " from cart of user: " + user);
+        } else {
+            log.info("Remove from cart failed, product not found in cart with productId: " + productId);
+        }
+        return cart;
+    }
+
+    @Override
+    public Map<Product, Integer> removeProductFromCart(Long userId, Long productId)
+            throws UserNotFoundException, ProductNotFoundException {
+        User user = getById(userId);
         Map<Product, Integer> cart = user.getCart();
-        Integer newQuantity = Math.max(cart.getOrDefault(product, 0) - quantity, 0);
-        cart.put(product, newQuantity);
+        Product product = productDao.getById(productId);
+
+        cart.remove(product);
+        log.info("Removed product: " + product + " from cart of user: " + user);
+        return cart;
+    }
+
+    @Override
+    public Map<Product, Integer> updateQuantityOfProductInCart(Long userId, Long productId, Integer updatedQuantity)
+            throws UserNotFoundException, ProductNotFoundException {
+        User user = getById(userId);
+        Map<Product, Integer> cart = user.getCart();
+        Product product = productDao.getById(productId);
+
+        cart.put(product, updatedQuantity);
+        log.info("Updated quantity: " + updatedQuantity + " of product: " + product + " in cart of user: " + user);
         return cart;
     }
 

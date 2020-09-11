@@ -1,5 +1,7 @@
 package com.aetos.webshop.user.controller;
 
+import com.aetos.webshop.product.exception.ProductNotFoundException;
+import com.aetos.webshop.product.model.Product;
 import com.aetos.webshop.user.dao.UserDao;
 import com.aetos.webshop.user.exception.UserNotFoundException;
 import com.aetos.webshop.user.model.User;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -54,5 +57,34 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
+
+    @GetMapping("/{userId}/cart")
+    public Map<Product, Integer> getCart(@PathVariable Long userId) {
+        try {
+            return userDao.getCart(userId);
+        } catch (UserNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @PutMapping("/{userId}/addToCart")
+    public Map<Product, Integer> addToCart(@PathVariable Long userId,
+                                           @RequestParam Long productId, @RequestParam Integer quantity) {
+        try {
+            return userDao.addToCart(userId, productId, quantity);
+        } catch (UserNotFoundException | ProductNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @PutMapping("/{userId}/removeFromCart")
+    public Map<Product, Integer> removeFromCart(@PathVariable Long userId,
+                                                @RequestParam Long productId) {
+        return userDao.removeFromCart(userId)
+    }
+
+
+
+
 
 }

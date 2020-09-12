@@ -67,7 +67,7 @@ public class UserDaoDB implements UserDao {
     @Override
     public Map<Product, Integer> getCart(Long userId) throws UserNotFoundException {
         User user = getById(userId);
-        log.info("Get cart for user: " + user);
+        log.info("Get cart of user: " + user);
         return user.getCart();
     }
 
@@ -80,9 +80,6 @@ public class UserDaoDB implements UserDao {
 
         cart.put(product, cart.getOrDefault(product, 0) + quantity);
         log.info("Product: " + product + " added to cart of user: " + user);
-
-        userRepository.save(user);
-
         return cart;
     }
 

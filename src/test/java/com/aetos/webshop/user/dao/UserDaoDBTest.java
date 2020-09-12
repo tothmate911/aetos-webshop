@@ -160,7 +160,6 @@ public class UserDaoDBTest {
         userDao.addUser(user1);
         userDao.addUser(user2);
         userDao.addUser(admin);
-
         Long userId = admin.getUserId();
 
         userDao.deleteUser(userId);
@@ -177,6 +176,11 @@ public class UserDaoDBTest {
     void getCart() throws UserNotFoundException, ProductNotFoundException {
         userDao.addUser(user1);
         Long userId = user1.getUserId();
+
+        when(productDaoMock.getById(product1.getProductId())).thenReturn(product1);
+        when(productDaoMock.getById(product2.getProductId())).thenReturn(product2);
+        when(productDaoMock.getById(product3.getProductId())).thenReturn(product3);
+
         userDao.addToCart(userId, product1.getProductId(), 1);
         userDao.addToCart(userId, product2.getProductId(), 2);
         userDao.addToCart(userId, product3.getProductId(), 3);
@@ -194,12 +198,12 @@ public class UserDaoDBTest {
     void addToCart() throws UserNotFoundException, ProductNotFoundException {
         userDao.addUser(user1);
         Long userId = user1.getUserId();
-
-        Long productId = 1L;
+        Long productId = product1.getProductId();
         when(productDaoMock.getById(productId)).thenReturn(product1);
+
         userDao.addToCart(userId, productId, 2);
-//
-//        assertThat(userDao.getCart(userId).get(product1)).isEqualTo(3);
+
+        assertThat(userDao.getCart(userId).get(product1)).isEqualTo(2);
     }
 
 }

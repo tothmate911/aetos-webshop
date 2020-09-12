@@ -30,7 +30,7 @@ public class User {
     private String firstName;
     private String lastName;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "cart",
             joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "quantity")

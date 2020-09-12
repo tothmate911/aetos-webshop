@@ -80,6 +80,9 @@ public class UserDaoDB implements UserDao {
 
         cart.put(product, cart.getOrDefault(product, 0) + quantity);
         log.info("Product: " + product + " added to cart of user: " + user);
+
+        userRepository.save(user);
+
         return cart;
     }
 

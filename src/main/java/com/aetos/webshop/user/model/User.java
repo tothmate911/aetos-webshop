@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +35,8 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "quantity")
     @MapKeyJoinColumn(name = "product_id")
-    private Map<Product, Integer> cart;
+    @Builder.Default
+    private Map<Product, Integer> cart = new HashMap<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default

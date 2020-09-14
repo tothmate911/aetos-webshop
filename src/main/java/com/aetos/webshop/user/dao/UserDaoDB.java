@@ -61,6 +61,7 @@ public class UserDaoDB implements UserDao {
         userToUpdate.setFirstName(updatedUser.getFirstName());
         userToUpdate.setLastName(updatedUser.getLastName());
 
+        userRepository.save(userToUpdate);
         log.info("Updated user: " + userToUpdate);
         return userToUpdate;
     }
@@ -89,6 +90,7 @@ public class UserDaoDB implements UserDao {
 
         cart.put(product, cart.getOrDefault(product, 0) + quantity);
         log.info("Product: " + product + " added to cart of user: " + user);
+        userRepository.save(user);
         return cart;
     }
 
@@ -106,6 +108,7 @@ public class UserDaoDB implements UserDao {
             } else {
                 cart.remove(product);
             }
+            userRepository.save(user);
             log.info("Removed one product: " + product + " from cart of user: " + user);
         } else {
             log.info("Remove from cart failed, product not found in cart with productId: " + productId);
@@ -121,6 +124,7 @@ public class UserDaoDB implements UserDao {
         Product product = productDao.getById(productId);
 
         cart.remove(product);
+        userRepository.save(user);
         log.info("Removed product: " + product + " from cart of user: " + user);
         return cart;
     }
@@ -132,14 +136,21 @@ public class UserDaoDB implements UserDao {
         Map<Product, Integer> cart = user.getCart();
         Product product = productDao.getById(productId);
 
-        cart.put(product, updatedQuantity);
+        if (updatedQuantity >= 1) {
+            cart.put(product, updatedQuantity);
+        } else {
+            cart.remove(product);
+        }
+        userRepository.save(user);
         log.info("Updated quantity: " + updatedQuantity + " of product: " + product + " in cart of user: " + user);
         return cart;
     }
 
     @Override
     public void clearCart(Long userId) throws UserNotFoundException {
+        WebshopUser user = getById(userId);
         getById(userId).getCart().clear();
+        userRepository.save(user);
     }
 
 }

@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
@@ -27,6 +28,9 @@ import static org.mockito.Mockito.when;
 @DataJpaTest
 @ActiveProfiles("test")
 public class WebshopUserDaoDBTest {
+
+    @Autowired
+    private TestEntityManager entityManager;
 
     private UserDao userDao;
 
@@ -200,6 +204,8 @@ public class WebshopUserDaoDBTest {
         Long userId = user1.getUserId();
         Long productId = product1.getProductId();
         when(productDaoMock.getById(productId)).thenReturn(product1);
+
+        entityManager.flush();
 
         userDao.addToCart(userId, productId, 2);
         assertThat(userDao.getCart(userId).get(product1)).isEqualTo(2);

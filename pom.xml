@@ -38,6 +38,13 @@
             <optional>true</optional>
         </dependency>
 
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.8.5</version>
+            <scope>runtime</scope>
+        </dependency>
+
         <!--Authentication-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

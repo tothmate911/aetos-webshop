@@ -1,7 +1,12 @@
 package com.aetos.webshop.user.repository;
 
-import com.aetos.webshop.user.model.User;
+import com.aetos.webshop.user.model.WebshopUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+import java.util.Optional;
+
+public interface UserRepository extends JpaRepository<WebshopUser, Long> {
+
+    Optional<WebshopUser> findByEmail(String email);
+
 }

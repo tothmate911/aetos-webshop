@@ -5,7 +5,7 @@ import com.aetos.webshop.product.exception.ProductNotFoundException;
 import com.aetos.webshop.product.model.Product;
 import com.aetos.webshop.product.repository.ProductRepository;
 import com.aetos.webshop.user.exception.UserNotFoundException;
-import com.aetos.webshop.user.model.User;
+import com.aetos.webshop.user.model.WebshopUser;
 import com.aetos.webshop.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,16 +26,16 @@ import static org.mockito.Mockito.when;
 
 @DataJpaTest
 @ActiveProfiles("test")
-public class UserDaoDBTest {
+public class WebshopUserDaoDBTest {
 
     private UserDao userDao;
 
     @Autowired
     private UserRepository userRepository;
 
-    private User user1;
-    private User user2;
-    private User admin;
+    private WebshopUser user1;
+    private WebshopUser user2;
+    private WebshopUser admin;
 
     private ProductDao productDaoMock;
 
@@ -57,7 +57,7 @@ public class UserDaoDBTest {
     private void initialiseUsers() {
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
-        user1 = User.builder()
+        user1 = WebshopUser.builder()
                 .email("user1@gmail.com")
                 .hashedPassword(passwordEncoder.encode("user1"))
                 .firstName("István")
@@ -65,7 +65,7 @@ public class UserDaoDBTest {
                 .roles(Collections.singletonList("ROLE_USER"))
                 .build();
 
-        user2 = User.builder()
+        user2 = WebshopUser.builder()
                 .email("user2@gmail.com")
                 .hashedPassword(passwordEncoder.encode("user2"))
                 .firstName("László")
@@ -73,7 +73,7 @@ public class UserDaoDBTest {
                 .roles(Collections.singletonList("ROLE_USER"))
                 .build();
 
-        admin = User.builder()
+        admin = WebshopUser.builder()
                 .email("admin@gmail.com")
                 .hashedPassword(passwordEncoder.encode("admin"))
                 .firstName("Admin")
@@ -141,7 +141,7 @@ public class UserDaoDBTest {
         userDao.addUser(user1);
         Long userId = user1.getUserId();
 
-        User updatedUser = User.builder()
+        WebshopUser updatedUser = WebshopUser.builder()
                 .firstName("updated First name")
                 .lastName("Nagy")
                 .build();

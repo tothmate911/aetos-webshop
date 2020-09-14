@@ -1,7 +1,7 @@
 package com.aetos.webshop.user.service;
 
 import com.aetos.webshop.user.dao.UserDao;
-import com.aetos.webshop.user.model.User;
+import com.aetos.webshop.user.model.WebshopUser;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,7 +27,7 @@ public class UserDataInitializer {
     @PostConstruct
     public void init() {
         userDao.addUser(
-                User.builder()
+                WebshopUser.builder()
                         .email("user1@gmail.com")
                         .hashedPassword(passwordEncoder.encode("user1"))
                         .firstName("István")
@@ -37,7 +37,7 @@ public class UserDataInitializer {
         );
 
         userDao.addUser(
-                User.builder()
+                WebshopUser.builder()
                         .email("user2@gmail.com")
                         .hashedPassword(passwordEncoder.encode("user2"))
                         .firstName("László")
@@ -47,7 +47,7 @@ public class UserDataInitializer {
         );
 
         userDao.addUser(
-                User.builder()
+                WebshopUser.builder()
                         .email("admin@gmail.com")
                         .hashedPassword(passwordEncoder.encode("admin"))
                         .firstName("Admin")

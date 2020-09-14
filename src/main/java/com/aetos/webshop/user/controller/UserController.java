@@ -4,7 +4,7 @@ import com.aetos.webshop.product.exception.ProductNotFoundException;
 import com.aetos.webshop.product.model.Product;
 import com.aetos.webshop.user.dao.UserDao;
 import com.aetos.webshop.user.exception.UserNotFoundException;
-import com.aetos.webshop.user.model.User;
+import com.aetos.webshop.user.model.WebshopUser;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -22,12 +22,12 @@ public class UserController {
     private UserDao userDao;
 
     @GetMapping("")
-    public List<User> getAll() {
+    public List<WebshopUser> getAll() {
         return userDao.getAll();
     }
 
     @GetMapping("/{userId}")
-    public User getById(@PathVariable Long userId) {
+    public WebshopUser getById(@PathVariable Long userId) {
         try {
             return userDao.getById(userId);
         } catch (UserNotFoundException e) {
@@ -36,12 +36,12 @@ public class UserController {
     }
 
     @PostMapping("")
-    public User addUser(@RequestBody User user) {
+    public WebshopUser addUser(@RequestBody WebshopUser user) {
         return userDao.addUser(user);
     }
 
     @PutMapping("/{userId}")
-    public User updateUser(@PathVariable Long userId, @RequestBody User updatedUser) {
+    public WebshopUser updateUser(@PathVariable Long userId, @RequestBody WebshopUser updatedUser) {
         try {
             return userDao.updateUser(userId, updatedUser);
         } catch (UserNotFoundException e) {
@@ -50,7 +50,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-    public User deleteUser(@PathVariable Long userId) {
+    public WebshopUser deleteUser(@PathVariable Long userId) {
         try {
             return userDao.deleteUser(userId);
         } catch (UserNotFoundException e) {

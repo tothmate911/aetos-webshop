@@ -10,17 +10,17 @@ import java.util.List;
 import java.util.Map;
 
 @Entity
-@Table(name="\"user\"")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class WebshopUser {
 
     @Id
     @GeneratedValue
     Long userId;
 
+    //email functions also as username
     @Column(nullable = false, unique = true)
     private String email;
 

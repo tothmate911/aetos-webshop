@@ -4,7 +4,7 @@ import com.aetos.webshop.product.dao.ProductDao;
 import com.aetos.webshop.product.exception.ProductNotFoundException;
 import com.aetos.webshop.product.model.Product;
 import com.aetos.webshop.user.exception.UserNotFoundException;
-import com.aetos.webshop.user.model.User;
+import com.aetos.webshop.user.model.WebshopUser;
 import com.aetos.webshop.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,13 +23,13 @@ public class UserDaoDB implements UserDao {
     private ProductDao productDao;
 
     @Override
-    public List<User> getAll() {
+    public List<WebshopUser> getAll() {
         log.info("Get all users");
         return userRepository.findAll();
     }
 
     @Override
-    public User getById(Long userId) throws UserNotFoundException {
+    public WebshopUser getById(Long userId) throws UserNotFoundException {
         return userRepository.findById(userId)
                 .orElseThrow(() -> {
                     log.info("User not found with id: " + userId);
@@ -38,7 +38,16 @@ public class UserDaoDB implements UserDao {
     }
 
     @Override
-    public User addUser(User user) {
+    public WebshopUser getByEmail(String email) throws UserNotFoundException {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> {
+                    log.info("User not found with email: " + email);
+                    return new UserNotFoundException("User not found with email: " + email);
+                });
+    }
+
+    @Override
+    public WebshopUser addUser(WebshopUser user) {
         user.setUserId(null);
         userRepository.save(user);
         log.info("User saved: " + user);
@@ -46,8 +55,8 @@ public class UserDaoDB implements UserDao {
     }
 
     @Override
-    public User updateUser(Long userId, User updatedUser) throws UserNotFoundException {
-        User userToUpdate = getById(userId);
+    public WebshopUser updateUser(Long userId, WebshopUser updatedUser) throws UserNotFoundException {
+        WebshopUser userToUpdate = getById(userId);
 
         userToUpdate.setFirstName(updatedUser.getFirstName());
         userToUpdate.setLastName(updatedUser.getLastName());
@@ -57,8 +66,8 @@ public class UserDaoDB implements UserDao {
     }
 
     @Override
-    public User deleteUser(Long userId) throws UserNotFoundException {
-        User user = getById(userId);
+    public WebshopUser deleteUser(Long userId) throws UserNotFoundException {
+        WebshopUser user = getById(userId);
         userRepository.delete(user);
         log.info("User deleted: " + user);
         return user;
@@ -66,7 +75,7 @@ public class UserDaoDB implements UserDao {
 
     @Override
     public Map<Product, Integer> getCart(Long userId) throws UserNotFoundException {
-        User user = getById(userId);
+        WebshopUser user = getById(userId);
         log.info("Get cart of user: " + user);
         return user.getCart();
     }
@@ -74,7 +83,7 @@ public class UserDaoDB implements UserDao {
     @Override
     public Map<Product, Integer> addToCart(Long userId, Long productId, Integer quantity)
             throws UserNotFoundException, ProductNotFoundException {
-        User user = getById(userId);
+        WebshopUser user = getById(userId);
         Map<Product, Integer> cart = user.getCart();
         Product product = productDao.getById(productId);
 
@@ -86,7 +95,7 @@ public class UserDaoDB implements UserDao {
     @Override
     public Map<Product, Integer> removeOneFromCart(Long userId, Long productId)
             throws UserNotFoundException, ProductNotFoundException {
-        User user = getById(userId);
+        WebshopUser user = getById(userId);
         Map<Product, Integer> cart = user.getCart();
         Product product = productDao.getById(productId);
 
@@ -107,7 +116,7 @@ public class UserDaoDB implements UserDao {
     @Override
     public Map<Product, Integer> removeProductFromCart(Long userId, Long productId)
             throws UserNotFoundException, ProductNotFoundException {
-        User user = getById(userId);
+        WebshopUser user = getById(userId);
         Map<Product, Integer> cart = user.getCart();
         Product product = productDao.getById(productId);
 
@@ -119,7 +128,7 @@ public class UserDaoDB implements UserDao {
     @Override
     public Map<Product, Integer> updateQuantityOfProductInCart(Long userId, Long productId, Integer updatedQuantity)
             throws UserNotFoundException, ProductNotFoundException {
-        User user = getById(userId);
+        WebshopUser user = getById(userId);
         Map<Product, Integer> cart = user.getCart();
         Product product = productDao.getById(productId);
 

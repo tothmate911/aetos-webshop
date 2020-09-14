@@ -1,4 +1,4 @@
-package com.aetos.webshop.model;
+package com.aetos.webshop.product.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +17,6 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Component
 public class Product {
 
     @Id

@@ -202,8 +202,148 @@ public class UserDaoDBTest {
         when(productDaoMock.getById(productId)).thenReturn(product1);
 
         userDao.addToCart(userId, productId, 2);
+        assertThat(userDao.getCart(userId).get(product1)).isEqualTo(2);
+        userDao.addToCart(userId, productId, 3);
+        assertThat(userDao.getCart(userId).get(product1)).isEqualTo(5);
+    }
+
+    @Test
+    void addToCartOfNonExistingUser() throws ProductNotFoundException {
+        Long productId = product1.getProductId();
+        when(productDaoMock.getById(productId)).thenReturn(product1);
+
+        assertThrows(UserNotFoundException.class,
+                () -> userDao.addToCart(990L, productId, 10));
+    }
+
+    @Test
+    void addToCartNonExistingProduct() throws ProductNotFoundException {
+        userDao.addUser(user1);
+        when(productDaoMock.getById(8800L)).thenThrow(ProductNotFoundException.class);
+        assertThrows(ProductNotFoundException.class,
+                () -> userDao.addToCart(user1.getUserId(), 8800L, 10));
+    }
+
+    @Test
+    void removeOneFromCart() throws UserNotFoundException, ProductNotFoundException {
+        userDao.addUser(user1);
+        Long userId = user1.getUserId();
+        Long productId = product1.getProductId();
+        when(productDaoMock.getById(productId)).thenReturn(product1);
+        userDao.addToCart(userId, productId, 3);
+
+        userDao.removeOneFromCart(userId, productId);
 
         assertThat(userDao.getCart(userId).get(product1)).isEqualTo(2);
+    }
+
+    @Test
+    void removeOneFromCartOfNonExistingUser() throws ProductNotFoundException {
+        Long productId = product1.getProductId();
+        when(productDaoMock.getById(productId)).thenReturn(product1);
+
+        assertThrows(UserNotFoundException.class,
+                () -> userDao.removeOneFromCart(4500L, productId));
+    }
+
+    @Test
+    void removeOneFromCartNonExistingProduct() throws ProductNotFoundException {
+        userDao.addUser(user1);
+        when(productDaoMock.getById(40L)).thenThrow(ProductNotFoundException.class);
+
+        assertThrows(ProductNotFoundException.class,
+                () -> userDao.removeOneFromCart(user1.getUserId(), 40L));
+    }
+
+    @Test
+    void removeProductFromCart() throws ProductNotFoundException, UserNotFoundException {
+        userDao.addUser(user1);
+        Long userId = user1.getUserId();
+
+        when(productDaoMock.getById(product1.getProductId())).thenReturn(product1);
+        when(productDaoMock.getById(product2.getProductId())).thenReturn(product2);
+        when(productDaoMock.getById(product3.getProductId())).thenReturn(product3);
+
+        userDao.addToCart(userId, product1.getProductId(), 1);
+        userDao.addToCart(userId, product2.getProductId(), 2);
+        userDao.addToCart(userId, product3.getProductId(), 3);
+
+        userDao.removeProductFromCart(userId, product2.getProductId());
+
+        assertThat(userDao.getCart(userId)).hasSize(2);
+        assertThat(userDao.getCart(userId).get(product2)).isNull();
+    }
+
+    @Test
+    void removeProductFromCartOfNonExistingUser() throws ProductNotFoundException {
+        Long productId = product1.getProductId();
+        when(productDaoMock.getById(productId)).thenReturn(product1);
+
+        assertThrows(UserNotFoundException.class,
+                () -> userDao.removeProductFromCart(57000L, productId));
+    }
+
+    @Test
+    void removeProductFromCartNonExistingProduct() throws ProductNotFoundException {
+        userDao.addUser(user1);
+        when(productDaoMock.getById(200L)).thenThrow(ProductNotFoundException.class);
+
+        assertThrows(ProductNotFoundException.class,
+                () -> userDao.removeProductFromCart(user1.getUserId(), 200L));
+    }
+
+    @Test
+    void updateQuantityOfProductInCart() throws ProductNotFoundException, UserNotFoundException {
+        userDao.addUser(user1);
+        Long userId = user1.getUserId();
+        Long productId = product1.getProductId();
+        when(productDaoMock.getById(productId)).thenReturn(product1);
+        userDao.addToCart(userId, productId, 12);
+
+        userDao.updateQuantityOfProductInCart(userId, productId, 20);
+
+        assertThat(userDao.getCart(userId).get(product1)).isEqualTo(20);
+    }
+
+    @Test
+    void updateQuantityOfProductInCartOfNonExistingUser() throws ProductNotFoundException {
+        Long productId = product1.getProductId();
+        when(productDaoMock.getById(productId)).thenReturn(product1);
+
+        assertThrows(UserNotFoundException.class,
+                () -> userDao.updateQuantityOfProductInCart(4300L, productId, 30));
+    }
+
+    @Test
+    void updateQuantityOfProductInCartOfNonExistingProduct() throws ProductNotFoundException {
+        userDao.addUser(user1);
+        when(productDaoMock.getById(40L)).thenThrow(ProductNotFoundException.class);
+
+        assertThrows(ProductNotFoundException.class,
+                () -> userDao.updateQuantityOfProductInCart(user1.getUserId(), 40L, 30));
+    }
+
+    @Test
+    void clearCart() throws ProductNotFoundException, UserNotFoundException {
+        userDao.addUser(user1);
+        Long userId = user1.getUserId();
+
+        when(productDaoMock.getById(product1.getProductId())).thenReturn(product1);
+        when(productDaoMock.getById(product2.getProductId())).thenReturn(product2);
+        when(productDaoMock.getById(product3.getProductId())).thenReturn(product3);
+
+        userDao.addToCart(userId, product1.getProductId(), 1);
+        userDao.addToCart(userId, product2.getProductId(), 2);
+        userDao.addToCart(userId, product3.getProductId(), 3);
+
+        userDao.clearCart(userId);
+
+        assertThat(userDao.getCart(userId)).hasSize(0);
+    }
+
+    @Test
+    void clearCartOfNonExistingUser() {
+        assertThrows(UserNotFoundException.class, () -> userDao.clearCart(65000L));
     }
 
 }

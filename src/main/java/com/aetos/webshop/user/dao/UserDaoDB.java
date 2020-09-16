@@ -17,7 +17,13 @@ public class UserDaoDB implements UserDao {
 
     @Override
     public WebshopUser getMyUserInfo() throws UserNotFoundException {
-        return adminUserDao.getById(getSignedInUserId());
+        WebshopUser user = adminUserDao.getById(getSignedInUserId());
+
+        //I don't want to send these back for a simple user info request
+        user.setHashedPassword(null);
+        user.setRoles(null);
+
+        return user;
     }
 
     private Long getSignedInUserId() throws UserNotFoundException {
@@ -26,4 +32,5 @@ public class UserDaoDB implements UserDao {
         WebshopUser user = adminUserDao.getByEmail(email);
         return user.getUserId();
     }
+
 }

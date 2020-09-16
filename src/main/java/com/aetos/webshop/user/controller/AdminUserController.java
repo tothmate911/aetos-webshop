@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/admin/users")
 @CrossOrigin(origins = "http://localhost:3000")
 @AllArgsConstructor
 public class AdminUserController {

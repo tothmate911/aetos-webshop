@@ -8,6 +8,7 @@ import com.aetos.webshop.user.model.WebshopUser;
 import com.aetos.webshop.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,6 +35,16 @@ public class AdminUserDaoDB implements AdminUserDao {
                 .orElseThrow(() -> {
                     log.info("User not found with id: " + userId);
                     return new UserNotFoundException(userId);
+                });
+    }
+
+    @Override
+    public WebshopUser getByEmail(String email) throws UserNotFoundException {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> {
+                    String message = "User not found with email: " + email;
+                    log.info(message);
+                    return new UserNotFoundException(message);
                 });
     }
 

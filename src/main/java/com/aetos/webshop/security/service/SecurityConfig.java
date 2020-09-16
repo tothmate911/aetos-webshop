@@ -32,7 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT, "/products/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/products/**").hasRole("ADMIN")
 
-                .antMatchers("/users/**").hasRole("ADMIN")
+                .antMatchers("/me/**").authenticated()
+
+                .antMatchers("/admin/**").hasRole("ADMIN")
 
                 .anyRequest().denyAll()
                 .and()

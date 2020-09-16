@@ -14,6 +14,8 @@ public interface AdminUserDao {
 
     WebshopUser getById(Long userId) throws UserNotFoundException;
 
+    WebshopUser getByEmail(String email) throws UserNotFoundException;
+
     WebshopUser addUser(WebshopUser user);
 
     WebshopUser updateUser(Long userId, WebshopUser updatedUser) throws UserNotFoundException;

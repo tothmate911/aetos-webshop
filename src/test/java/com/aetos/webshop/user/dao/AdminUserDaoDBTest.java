@@ -124,17 +124,27 @@ public class AdminUserDaoDBTest {
 
     @Test
     void getById() throws UserNotFoundException {
-
         adminUserDao.addUser(user1);
         adminUserDao.addUser(user2);
         adminUserDao.addUser(admin);
 
-        assertThat(adminUserDao.getById(user2.getUserId()).getUserId()).isNotNull();
+        assertThat(adminUserDao.getById(user2.getUserId())).isEqualTo(user2) ;
     }
 
     @Test
     void getNonExistingUser() {
         assertThrows(UserNotFoundException.class, () -> adminUserDao.getById(330L));
+    }
+
+    @Test
+    void getByEmail() throws UserNotFoundException {
+        adminUserDao.addUser(user1);
+        assertThat(adminUserDao.getByEmail("user1@gmail.com")).isEqualTo(user1);
+    }
+
+    @Test
+    void getByEmailNonExistingUser() {
+        assertThrows(UserNotFoundException.class, () -> adminUserDao.getByEmail("nouser@nouser.nouser"));
     }
 
     @Test

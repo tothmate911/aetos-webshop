@@ -5,10 +5,7 @@ import com.aetos.webshop.user.exception.UserNotFoundException;
 import com.aetos.webshop.user.model.WebshopUser;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
@@ -19,13 +16,18 @@ public class UserController {
 
     private UserDao userDao;
 
-    @GetMapping("/userinfo")
-    public WebshopUser getMyUserInfo() {
+    @GetMapping("")
+    public WebshopUser getMe() {
         try {
-            return userDao.getMyUserInfo();
+            return userDao.getMe();
         } catch (UserNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
+    }
+
+    @PutMapping("")
+    public WebshopUser updateMe(@RequestBody WebshopUser updatedUser) {
+        userDao.updateMe(updatedUser);
     }
 
 }

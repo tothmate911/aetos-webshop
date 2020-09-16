@@ -6,4 +6,8 @@ public class UserNotFoundException extends Exception {
         super("User not found with userId: " + userId);
     }
 
+    public UserNotFoundException(String message) {
+        super(message);
+    }
+
 }

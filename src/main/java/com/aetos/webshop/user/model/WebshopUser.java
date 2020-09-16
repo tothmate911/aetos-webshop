@@ -1,6 +1,7 @@
 package com.aetos.webshop.user.model;
 
 import com.aetos.webshop.product.model.Product;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -10,17 +11,17 @@ import java.util.List;
 import java.util.Map;
 
 @Entity
-@Table(name="\"user\"")
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+@Builder
+public class WebshopUser {
 
     @Id
     @GeneratedValue
-    Long userId;
+    private Long userId;
 
+    //email functions also as username
     @Column(nullable = false, unique = true)
     private String email;
 
@@ -28,8 +29,10 @@ public class User {
     private String hashedPassword;
 
     private String firstName;
+
     private String lastName;
 
+    @JsonIgnore
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "cart",
             joinColumns = @JoinColumn(name = "user_id"))
@@ -43,3 +46,4 @@ public class User {
     private List<String> roles = new ArrayList<>();
 
 }
+

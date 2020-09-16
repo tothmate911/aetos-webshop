@@ -12,12 +12,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -28,9 +28,6 @@ import static org.mockito.Mockito.when;
 @DataJpaTest
 @ActiveProfiles("test")
 public class WebshopUserDaoDBTest {
-
-    @Autowired
-    private TestEntityManager entityManager;
 
     private UserDao userDao;
 
@@ -66,7 +63,7 @@ public class WebshopUserDaoDBTest {
                 .hashedPassword(passwordEncoder.encode("user1"))
                 .firstName("István")
                 .lastName("Nagy")
-                .roles(Collections.singletonList("ROLE_USER"))
+                .roles(new ArrayList<>(Collections.singletonList("ROLE_USER")))
                 .build();
 
         user2 = WebshopUser.builder()
@@ -74,7 +71,7 @@ public class WebshopUserDaoDBTest {
                 .hashedPassword(passwordEncoder.encode("user2"))
                 .firstName("László")
                 .lastName("Kis")
-                .roles(Collections.singletonList("ROLE_USER"))
+                .roles(new ArrayList<>(Collections.singletonList("ROLE_USER")))
                 .build();
 
         admin = WebshopUser.builder()
@@ -82,7 +79,7 @@ public class WebshopUserDaoDBTest {
                 .hashedPassword(passwordEncoder.encode("admin"))
                 .firstName("Admin")
                 .lastName("Admin")
-                .roles(Arrays.asList("ROLE_USER", "ROLE_ADMIN"))
+                .roles(new ArrayList<>(Arrays.asList("ROLE_USER", "ROLE_ADMIN")))
                 .build();
     }
 
@@ -201,13 +198,13 @@ public class WebshopUserDaoDBTest {
     @Test
     void addToCart() throws UserNotFoundException, ProductNotFoundException {
         userDao.addUser(user1);
+
         Long userId = user1.getUserId();
         Long productId = product1.getProductId();
         when(productDaoMock.getById(productId)).thenReturn(product1);
 
-        entityManager.flush();
-
         userDao.addToCart(userId, productId, 2);
+
         assertThat(userDao.getCart(userId).get(product1)).isEqualTo(2);
         userDao.addToCart(userId, productId, 3);
         assertThat(userDao.getCart(userId).get(product1)).isEqualTo(5);

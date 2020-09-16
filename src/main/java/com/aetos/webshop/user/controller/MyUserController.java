@@ -39,7 +39,7 @@ public class MyUserController {
         }
     }
 
-    @GetMapping("/cart")
+    @GetMapping("/MyCart")
     public Map<Product, Integer> getMyCart() {
         try {
             return myUserDao.getMyCart();
@@ -70,7 +70,7 @@ public class MyUserController {
     @PutMapping("/removeProductFromMyCart")
     public Map<Product, Integer> removeProductFromMyCart(@RequestParam Long productId) {
         try {
-            return myUserDao.removeOneFromMyCart(productId);
+            return myUserDao.removeProductFromMyCart(productId);
         } catch (UserNotFoundException | ProductNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }

@@ -1,5 +1,8 @@
 package com.aetos.webshop.user.model;
 
+import lombok.Data;
+
+@Data
 public class PublicUserInfo {
 
     public PublicUserInfo(WebshopUser webshopUser) {

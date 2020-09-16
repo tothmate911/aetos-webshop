@@ -7,11 +7,11 @@ import com.aetos.webshop.user.model.WebshopUser;
 
 import java.util.Map;
 
-public interface UserDao {
+public interface MyUserDao {
 
     WebshopUser getMe() throws UserNotFoundException;
 
-    void updateMe(WebshopUser updatedUser) throws UserNotFoundException;
+    WebshopUser updateMe(WebshopUser updatedUser) throws UserNotFoundException;
 
     Map<Product, Integer> getMyCart() throws UserNotFoundException;
 

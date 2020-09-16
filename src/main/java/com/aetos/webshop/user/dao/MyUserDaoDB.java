@@ -15,7 +15,7 @@ import java.util.Map;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class UserDaoDB implements UserDao {
+public class MyUserDaoDB implements MyUserDao {
 
     private AdminUserDao adminUserDao;
 
@@ -38,8 +38,8 @@ public class UserDaoDB implements UserDao {
     }
 
     @Override
-    public void updateMe(WebshopUser updatedUser) throws UserNotFoundException {
-        adminUserDao.updateUser(getSignedInUserId(), updatedUser);
+    public WebshopUser updateMe(WebshopUser updatedUser) throws UserNotFoundException {
+        return adminUserDao.updateUser(getSignedInUserId(), updatedUser);
     }
 
     @Override

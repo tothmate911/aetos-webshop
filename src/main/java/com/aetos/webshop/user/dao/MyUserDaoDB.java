@@ -3,6 +3,7 @@ package com.aetos.webshop.user.dao;
 import com.aetos.webshop.product.exception.ProductNotFoundException;
 import com.aetos.webshop.product.model.Product;
 import com.aetos.webshop.user.exception.UserNotFoundException;
+import com.aetos.webshop.user.model.PublicUserInfo;
 import com.aetos.webshop.user.model.WebshopUser;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -24,23 +25,16 @@ public class MyUserDaoDB implements MyUserDao {
         return user.getUserId();
     }
 
-    private WebshopUser hideSomeData(WebshopUser user) {
-        //I don't want to send these back for a simple user info request
-        user.setHashedPassword(null);
-        user.setRoles(null);
-        return user;
-    }
-
     @Override
-    public WebshopUser getMe() throws UserNotFoundException {
+    public PublicUserInfo getMe() throws UserNotFoundException {
         WebshopUser user = adminUserDao.getById(getSignedInUserId());
-        return hideSomeData(user);
+        return new PublicUserInfo(user);
     }
 
     @Override
-    public WebshopUser updateMe(WebshopUser updatedUser) throws UserNotFoundException {
+    public PublicUserInfo updateMe(WebshopUser updatedUser) throws UserNotFoundException {
         WebshopUser user = adminUserDao.updateUser(getSignedInUserId(), updatedUser);
-        return hideSomeData(user);
+        return new PublicUserInfo(user);
     }
 
     @Override

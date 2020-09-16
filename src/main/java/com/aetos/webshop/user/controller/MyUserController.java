@@ -4,6 +4,7 @@ import com.aetos.webshop.product.exception.ProductNotFoundException;
 import com.aetos.webshop.product.model.Product;
 import com.aetos.webshop.user.dao.MyUserDao;
 import com.aetos.webshop.user.exception.UserNotFoundException;
+import com.aetos.webshop.user.model.PublicUserInfo;
 import com.aetos.webshop.user.model.WebshopUser;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ public class MyUserController {
     private MyUserDao myUserDao;
 
     @GetMapping("")
-    public WebshopUser getMe() {
+    public PublicUserInfo getMe() {
         try {
             return myUserDao.getMe();
         } catch (UserNotFoundException e) {
@@ -30,7 +31,7 @@ public class MyUserController {
     }
 
     @PutMapping("")
-    public WebshopUser updateMe(@RequestBody WebshopUser updatedUser) {
+    public PublicUserInfo updateMe(@RequestBody WebshopUser updatedUser) {
         try {
             return myUserDao.updateMe(updatedUser);
         } catch (UserNotFoundException e) {

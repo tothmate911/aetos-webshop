@@ -19,7 +19,7 @@ public class WebshopUser {
 
     @Id
     @GeneratedValue
-    Long userId;
+    private Long userId;
 
     //email functions also as username
     @Column(nullable = false, unique = true)

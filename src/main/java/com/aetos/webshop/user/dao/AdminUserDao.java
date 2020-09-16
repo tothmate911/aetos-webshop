@@ -8,13 +8,11 @@ import com.aetos.webshop.user.model.WebshopUser;
 import java.util.List;
 import java.util.Map;
 
-public interface UserDao {
+public interface AdminUserDao {
 
     List<WebshopUser> getAll();
 
     WebshopUser getById(Long userId) throws UserNotFoundException;
-
-    WebshopUser getByEmail(String email) throws UserNotFoundException;
 
     WebshopUser addUser(WebshopUser user);
 

@@ -25,10 +25,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/auth/signin").permitAll()
-                .antMatchers("/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/**").permitAll()
-                .antMatchers(HttpMethod.PUT, "/**").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/**").permitAll()
+
+                .antMatchers(HttpMethod.GET, "/products/**").permitAll()
+
+                .antMatchers(HttpMethod.POST, "/products/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/products/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/products/**").hasRole("ADMIN")
+
+                .antMatchers("/users/**").hasRole("ADMIN")
 
                 .anyRequest().denyAll()
                 .and()

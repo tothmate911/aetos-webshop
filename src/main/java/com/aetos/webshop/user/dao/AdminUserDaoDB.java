@@ -16,7 +16,7 @@ import java.util.Map;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class UserDaoDB implements UserDao {
+public class AdminUserDaoDB implements AdminUserDao {
 
     private UserRepository userRepository;
 
@@ -34,15 +34,6 @@ public class UserDaoDB implements UserDao {
                 .orElseThrow(() -> {
                     log.info("User not found with id: " + userId);
                     return new UserNotFoundException(userId);
-                });
-    }
-
-    @Override
-    public WebshopUser getByEmail(String email) throws UserNotFoundException {
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> {
-                    log.info("User not found with email: " + email);
-                    return new UserNotFoundException("User not found with email: " + email);
                 });
     }
 

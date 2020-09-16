@@ -29,6 +29,7 @@ public class WebshopUser {
     private String hashedPassword;
 
     private String firstName;
+
     private String lastName;
 
     @JsonIgnore

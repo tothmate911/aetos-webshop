@@ -5,7 +5,6 @@ import com.aetos.webshop.product.model.Product;
 import com.aetos.webshop.user.exception.UserNotFoundException;
 import com.aetos.webshop.user.model.WebshopUser;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,6 @@ import java.util.Map;
 
 @Service
 @AllArgsConstructor
-@Slf4j
 public class MyUserDaoDB implements MyUserDao {
 
     private AdminUserDao adminUserDao;
@@ -26,20 +24,23 @@ public class MyUserDaoDB implements MyUserDao {
         return user.getUserId();
     }
 
-    @Override
-    public WebshopUser getMe() throws UserNotFoundException {
-        WebshopUser user = adminUserDao.getById(getSignedInUserId());
-
+    private WebshopUser hideSomeData(WebshopUser user) {
         //I don't want to send these back for a simple user info request
         user.setHashedPassword(null);
         user.setRoles(null);
-
         return user;
     }
 
     @Override
+    public WebshopUser getMe() throws UserNotFoundException {
+        WebshopUser user = adminUserDao.getById(getSignedInUserId());
+        return hideSomeData(user);
+    }
+
+    @Override
     public WebshopUser updateMe(WebshopUser updatedUser) throws UserNotFoundException {
-        return adminUserDao.updateUser(getSignedInUserId(), updatedUser);
+        WebshopUser user = adminUserDao.updateUser(getSignedInUserId(), updatedUser);
+        return hideSomeData(user);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.aetos.webshop.user.dao;
 
+import com.aetos.webshop.user.exception.UserNotFoundException;
 import com.aetos.webshop.user.model.WebshopUser;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,13 +16,14 @@ public class UserDaoDB implements UserDao {
     private AdminUserDao adminUserDao;
 
     @Override
-    public WebshopUser getMyUserInfo() {
+    public WebshopUser getMyUserInfo() throws UserNotFoundException {
+        return adminUserDao.getById(getSignedInUserId());
+    }
+
+    private Long getSignedInUserId() throws UserNotFoundException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-
-        WebshopUser user = (WebshopUser) authentication.getPrincipal();
-        log.info("This user is signed in: " + user);
-
-        return user;
+        String email = (String) authentication.getPrincipal();
+        WebshopUser user = adminUserDao.getByEmail(email);
+        return user.getUserId();
     }
 }

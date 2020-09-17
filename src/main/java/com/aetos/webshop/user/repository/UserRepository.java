@@ -9,4 +9,6 @@ public interface UserRepository extends JpaRepository<WebshopUser, Long> {
 
     Optional<WebshopUser> findByEmail(String email);
 
+    boolean existsByEmail(String email);
+
 }

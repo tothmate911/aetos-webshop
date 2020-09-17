@@ -75,6 +75,7 @@ public class AuthController {
 
         } catch (UserAlreadyExistsException e) {
             model.put("successful registration", false);
+            model.put("message", e.getMessage());
             return ResponseEntity.ok(model);
         }
     }

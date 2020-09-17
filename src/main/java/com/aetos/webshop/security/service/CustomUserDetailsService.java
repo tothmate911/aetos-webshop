@@ -23,7 +23,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         WebshopUser webshopUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
-        return new User(webshopUser.getEmail(), webshopUser.getHashedPassword(),
+        return new User(webshopUser.getEmail(), webshopUser.getPassword(),
                 webshopUser.getRoles().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
     }
 

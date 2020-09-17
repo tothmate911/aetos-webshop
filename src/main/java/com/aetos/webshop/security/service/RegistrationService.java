@@ -30,7 +30,7 @@ public class RegistrationService {
             WebshopUser userToRegister = WebshopUser.builder()
                     .email(email)
                     //the password of userData is not hashed yet, so it needs to be
-                    .hashedPassword(passwordEncoder.encode(userData.getHashedPassword()))
+                    .password(passwordEncoder.encode(userData.getPassword()))
                     .firstName(userData.getFirstName())
                     .lastName(userData.getLastName())
                     .roles(new ArrayList<>(Collections.singletonList("ROLE_USER")))

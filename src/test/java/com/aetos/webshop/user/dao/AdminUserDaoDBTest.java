@@ -147,7 +147,16 @@ public class AdminUserDaoDBTest {
         assertThrows(UserNotFoundException.class, () -> adminUserDao.getByEmail("nouser@nouser.nouser"));
     }
 
-    //Todo test exist
+    @Test
+    void exists() {
+        adminUserDao.addUser(user1);
+        assertThat(adminUserDao.exists(user1.getEmail())).isTrue();
+    }
+
+    @Test
+    void existsNonExistingUser() {
+        assertThat(adminUserDao.exists("nouser@nouser.nouser")).isFalse();
+    }
 
     @Test
     void updateUser() throws UserNotFoundException {

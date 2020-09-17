@@ -26,10 +26,12 @@ public class WebshopUser {
     private String email;
 
     @Column(nullable = false, unique = true)
-    private String hashedPassword;
+    private String password;
 
+    @Column(nullable = false)
     private String firstName;
 
+    @Column(nullable = false)
     private String lastName;
 
     @JsonIgnore
@@ -46,4 +48,3 @@ public class WebshopUser {
     private List<String> roles = new ArrayList<>();
 
 }
-

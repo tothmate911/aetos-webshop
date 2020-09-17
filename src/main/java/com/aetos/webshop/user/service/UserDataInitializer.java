@@ -30,7 +30,7 @@ public class UserDataInitializer {
         adminUserDao.addUser(
                 WebshopUser.builder()
                         .email("user1@gmail.com")
-                        .hashedPassword(passwordEncoder.encode("user1"))
+                        .password(passwordEncoder.encode("user1"))
                         .firstName("István")
                         .lastName("Nagy")
                         .roles(new ArrayList<>(Collections.singletonList("ROLE_USER")))
@@ -40,7 +40,7 @@ public class UserDataInitializer {
         adminUserDao.addUser(
                 WebshopUser.builder()
                         .email("user2@gmail.com")
-                        .hashedPassword(passwordEncoder.encode("user2"))
+                        .password(passwordEncoder.encode("user2"))
                         .firstName("László")
                         .lastName("Kis")
                         .roles(new ArrayList<>(Collections.singletonList("ROLE_USER")))
@@ -50,7 +50,7 @@ public class UserDataInitializer {
         adminUserDao.addUser(
                 WebshopUser.builder()
                         .email("admin@gmail.com")
-                        .hashedPassword(passwordEncoder.encode("admin"))
+                        .password(passwordEncoder.encode("admin"))
                         .firstName("Admin")
                         .lastName("Admin")
                         .roles(new ArrayList<>(Arrays.asList("ROLE_USER", "ROLE_ADMIN")))

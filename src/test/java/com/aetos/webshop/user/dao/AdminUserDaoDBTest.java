@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
@@ -38,6 +39,8 @@ public class AdminUserDaoDBTest {
     private WebshopUser user2;
     private WebshopUser admin;
 
+    private PasswordEncoder passwordEncoder;
+
     private ProductDao productDaoMock;
 
     @Autowired
@@ -51,16 +54,16 @@ public class AdminUserDaoDBTest {
     void setUp() {
         productDaoMock = Mockito.mock(ProductDao.class);
         adminUserDao = new AdminUserDaoDB(userRepository, productDaoMock);
+        passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         initialiseUsers();
         initialiseProducts();
     }
 
     private void initialiseUsers() {
-        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
         user1 = WebshopUser.builder()
                 .email("user1@gmail.com")
-                .hashedPassword(passwordEncoder.encode("user1"))
+                .password(passwordEncoder.encode("user1"))
                 .firstName("István")
                 .lastName("Nagy")
                 .roles(new ArrayList<>(Collections.singletonList("ROLE_USER")))
@@ -68,7 +71,7 @@ public class AdminUserDaoDBTest {
 
         user2 = WebshopUser.builder()
                 .email("user2@gmail.com")
-                .hashedPassword(passwordEncoder.encode("user2"))
+                .password(passwordEncoder.encode("user2"))
                 .firstName("László")
                 .lastName("Kis")
                 .roles(new ArrayList<>(Collections.singletonList("ROLE_USER")))
@@ -76,7 +79,7 @@ public class AdminUserDaoDBTest {
 
         admin = WebshopUser.builder()
                 .email("admin@gmail.com")
-                .hashedPassword(passwordEncoder.encode("admin"))
+                .password(passwordEncoder.encode("admin"))
                 .firstName("Admin")
                 .lastName("Admin")
                 .roles(new ArrayList<>(Arrays.asList("ROLE_USER", "ROLE_ADMIN")))
@@ -123,12 +126,60 @@ public class AdminUserDaoDBTest {
     }
 
     @Test
+    void emailShouldNotBeNull() {
+        WebshopUser user = WebshopUser.builder()
+                .password(passwordEncoder.encode("user"))
+                .firstName("Kis")
+                .lastName("Imre")
+                .roles(new ArrayList<>(Collections.singletonList("ROLE_USER")))
+                .build();
+
+        assertThrows(DataIntegrityViolationException.class, () -> adminUserDao.addUser(user));
+    }
+
+    @Test
+    void passwordShouldNotBeNull() {
+        WebshopUser user = WebshopUser.builder()
+                .email("kis@gmail.com")
+                .firstName("Kis")
+                .lastName("Imre")
+                .roles(new ArrayList<>(Collections.singletonList("ROLE_USER")))
+                .build();
+
+        assertThrows(DataIntegrityViolationException.class, () -> adminUserDao.addUser(user));
+    }
+
+    @Test
+    void firstNameShouldNotBeNull() {
+        WebshopUser user = WebshopUser.builder()
+                .email("kis@gmail.com")
+                .password(passwordEncoder.encode("user"))
+                .lastName("Imre")
+                .roles(new ArrayList<>(Collections.singletonList("ROLE_USER")))
+                .build();
+
+        assertThrows(DataIntegrityViolationException.class, () -> adminUserDao.addUser(user));
+    }
+
+    @Test
+    void lastNameShouldNotBeNull() {
+        WebshopUser user = WebshopUser.builder()
+                .email("kis@gmail.com")
+                .password(passwordEncoder.encode("user"))
+                .firstName("Kis")
+                .roles(new ArrayList<>(Collections.singletonList("ROLE_USER")))
+                .build();
+
+        assertThrows(DataIntegrityViolationException.class, () -> adminUserDao.addUser(user));
+    }
+
+    @Test
     void getById() throws UserNotFoundException {
         adminUserDao.addUser(user1);
         adminUserDao.addUser(user2);
         adminUserDao.addUser(admin);
 
-        assertThat(adminUserDao.getById(user2.getUserId())).isEqualTo(user2) ;
+        assertThat(adminUserDao.getById(user2.getUserId())).isEqualTo(user2);
     }
 
     @Test
@@ -145,6 +196,17 @@ public class AdminUserDaoDBTest {
     @Test
     void getByEmailNonExistingUser() {
         assertThrows(UserNotFoundException.class, () -> adminUserDao.getByEmail("nouser@nouser.nouser"));
+    }
+
+    @Test
+    void exists() {
+        adminUserDao.addUser(user1);
+        assertThat(adminUserDao.exists(user1.getEmail())).isTrue();
+    }
+
+    @Test
+    void existsNonExistingUser() {
+        assertThat(adminUserDao.exists("nouser@nouser.nouser")).isFalse();
     }
 
     @Test

@@ -35,7 +35,7 @@ public class WebshopUser {
     private String lastName;
 
     @JsonIgnore
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection
     @CollectionTable(name = "cart",
             joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "quantity")
@@ -43,7 +43,7 @@ public class WebshopUser {
     @Builder.Default
     private Map<Product, Integer> cart = new HashMap<>();
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection
     @Builder.Default
     private List<String> roles = new ArrayList<>();
 
